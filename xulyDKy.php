@@ -1,6 +1,5 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-
 /* Database connection start */
 $serverName = "LLANN";
 $database = "QL_SVTT";
@@ -25,6 +24,21 @@ if(isset($_POST['createNV'])){
     $chucvu = trim($_POST['chucvu']);
     $email = trim($_POST['email']);
     $gioitinh = trim($_POST['gtinh']);
+    //Check gioi tinh
+
+        if(isset($_POST['gtinh'])){
+            if($_POST['gtinh'] == "Nam") {
+                $gioitinh = "Nam";
+            } elseif ($_POST['gtinh'] == "Nữ") {
+                $gioitinh = "Nữ";
+            } else {
+                $errors[] = "Không chọn đúng giới tính.";
+            }
+        } else {
+            $errors[] = "Chưa chọn giới tính.";
+        }
+        
+
     $maphongban = trim($_POST['mapb']);
     $matkhau = trim($_POST['pw']);
 
@@ -38,7 +52,7 @@ if(isset($_POST['createNV'])){
     if(empty($diachi)) { array_push($errors, "Địa chỉ là bắt buộc"); }
     if(empty($chucvu)) { array_push($errors, "Chức vụ là bắt buộc"); }
     if(empty($email)) { array_push($errors, "Email là bắt buộc"); }
-    if(empty($gioitinh)) { array_push($errors, "Giới tính là bắt buộc"); }
+    if(empty($gioitinh)) {$errors = "Chưa chọn giới tính";}
     if(empty($maphongban)) { array_push($errors, "Mã phòng ban là bắt buộc"); }
     if(empty($matkhau)) { array_push($errors, "Mật khẩu là bắt buộc"); }
 
@@ -61,9 +75,9 @@ if(isset($_POST['createNV'])){
         //     'threads' => 2
         // ];
         $hashedPassword = password_hash($matkhau, PASSWORD_ARGON2ID);
-
+        
         // Insert new employee record into database //(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, password)
-        $sql = "INSERT INTO nhanvien VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO nhanvien VALUES (?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?)";
         $params = array($id, $manv, $hoten, $ngaysinh, $sdt, $diachi, $chucvu, $email, $gioitinh, $maphongban, $hashedPassword);
         $stmt = sqlsrv_query($conn, $sql, $params);
         if($stmt === false) { // Handle query error
