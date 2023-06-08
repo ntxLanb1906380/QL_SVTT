@@ -1,18 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 /* Database connection start */
-include "connect.php" 
-// $serverName = "LLANN";
-// $database = "QL_SVTT";
-// $uid = "";
-// $pass = "";
-
-// $conn = sqlsrv_connect($serverName, array(
-//     "Database" => $database,
-//     "Uid" => $uid,
-//     "PWD" => $pass
-// ));
-?>
+  include "connect.php" ?>
 <?php
 // Check if form is submitted
 if(isset($_POST['createNV'])){
@@ -87,9 +76,7 @@ if(isset($_POST['createNV'])){
             array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
         } 
         else {
-            echo "Quá trình đăng ký thành công. <a href='DSNV.php'>Danh sách nhân viên đã cập nhật</a> <br/>";
-            echo "Id: $id <br/> Mã nhân viên: $manv <br/> Họ tên: $hoten <br/> Ngày sinh: $ngaysinh <br/> Số điện thoại: $sdt <br/> Địa chỉ: $diachi <br/> Chức vụ: $chucvu <br/> Email: $email <br/> Giới tính: $gioitinh <br/> Mã phòng ban: $maphongban <br/> Password: ********** <br/>";
-            
+            header('Location: DSNV.php');
         }
 
         if( isset($stmt) && !empty($stmt) ) {

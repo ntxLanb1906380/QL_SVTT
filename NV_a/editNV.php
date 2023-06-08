@@ -40,28 +40,28 @@
 	<form method="post" action="xulySuaNV.php" class="form">
 		<h2>Sửa thông tin nhân viên</h2>
 		Id:
-		<input type="text" name="id" value="<?php echo $id; ?>" class="d"><br />
+		<input type="text" name="id" value="<?php echo $id; ?>" required class="d"><br />
 		Mã nhân viên:
-		<input type="text" name="mnv" value="<?php echo $mnv; ?>" class="d"><br />
+		<input type="text" name="mnv" value="<?php echo $mnv; ?>" required class="d"><br />
 		Họ tên:
-		<input type="text" name="hoten" value="<?php echo $hten; ?>" class="d"><br />
+		<input type="text" name="hoten" value="<?php echo $hten; ?>" required class="d"><br />
 		Ngày sinh:
-		<input type="date" name="ngsinh" value="<?php echo $ngsinh ->format('d-m-Y'); ?>" class="d"><br />
+		<input type="date" name="ngsinh" value="<?php echo $ngsinh ->format('d-m-Y'); ?>" required class="d"><br />
 		Số điện thoại:
-		<input type="tel" name="sdt" value="<?php echo $sdt; ?>" class="d"><br />
+		<input type="tel" name="sdt" value="<?php echo $sdt; ?>" required class="d"><br />
 		Địa chỉ:
-		<input type="text" name="dchi" value="<?php echo $dchi; ?>" class="d"><br />
+		<input type="text" name="dchi" value="<?php echo $dchi; ?>" required class="d"><br />
 		Chức vụ: <br />
 
 		<select id="chucvu" name="chucvu">
-			<option value="0">-- Chọn chức vụ của nhân viên</option>
+			<option value="<?php echo $chvu; ?>"><?php echo $chvu; ?></option>
 			<option value="Nhân viên admin"> Nhân viên admin</option>
 			<option value="Nhân viên"> Nhân viên</option>
 			<option value="Phó giám đốc"> Phó giám đốc</option>
 			<option value="Giám đốc"> Giám đốc</option>
 		</select> <br /><br />
 
-		Email: <input type="email" name="email" value="<?php echo $email; ?>" class="d"><br />
+		Email: <input type="email" name="email" value="<?php echo $email; ?>" required class="d"><br />
 
 		Giới tính: <br />
 
@@ -71,7 +71,7 @@
 		<label for="css">Nữ</label><br>
 
 		Mã phòng ban: <select id="mapb" name="mapb">
-			<option value="0">-- Chọn mã phòng ban/ tổ</option>
+			<option value="<?php echo $mpb; ?>"><?php echo $mpb; ?></option>
 			<option value="1"> 1 (Ban giám đốc)</option>
 			<option value="2"> 2 (Phòng kinh doanh)</option>
 			<option value="3"> 3 (Phòng giải pháp)</option>
@@ -87,8 +87,8 @@
 		</select> <br /><br />
 
 
-		Mật khẩu: <input type="password" name="pw" value="" class="d"><br />
-		Nhập lại mật khẩu: <input type="password" name="pw" value="" class="d"><br />
+		Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
+		Nhập lại mật khẩu: <input type="password" name="pw" required value="" class="d"><br />
 		<br /><br />
 		<input type="submit" name="saveNV" value="Lưu thông tin đã sửa" class="a" />
 		<br />

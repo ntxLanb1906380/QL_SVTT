@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* Database connection start */
 $serverName = "LLANN";
 $database = "QL_SVTT";
@@ -41,7 +41,7 @@ if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
                 // $numRows = sqlsrv_num_rows($stmt);
                 // $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
                 // var_dump($row);
-                
+
                 // Lấy số lượng bản ghi trả về
                 if (sqlsrv_has_rows($stmt)) {
                     // Lấy thông tin user
@@ -54,7 +54,7 @@ if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
                         setcookie($cookie_name, $cookie_value, time() + (86400 / 24), "/");
                         setcookie("hoten", $row['hoten'], time() + (86400 / 24), "/");
                         setcookie("id", $row['id'], time() + (86400 / 24), "/");
-                        header('Location: trangchu.php');
+                        header('Location: ./NV_a/Untitled-1.php');
                     } else {
                         // Wrong password
                         echo "Sai nhân viên hoặc mật khẩu";

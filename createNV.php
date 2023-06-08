@@ -14,14 +14,14 @@
   $database = "QL_SVTT";
   $uid = "";
   $pass = "";
-
+  
   $conn = sqlsrv_connect($serverName, array(
     "Database" => $database,
     "Uid" => $uid,
     "PWD" => $pass
   )
   );
-
+  
   // Lấy id 
   $max_id_query = "SELECT MAX(id) AS max_id FROM nhanvien;";
   $result = sqlsrv_query($conn, $max_id_query);
@@ -84,8 +84,8 @@
 
     Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
     Nhập lại mật khẩu: <input type="password" name="cf_pw" value="" required class="d"><br />
-
-    <input type="submit" name="createNV" value="Tạo tài khoản" />
+    <br /><br />
+    <input type="submit" name="createNV" value="Tạo tài khoản" class="a" />
     <?php require 'xulyDKy.php'; ?>
   </form>
 

@@ -77,7 +77,8 @@ if(isset($_POST['createNV'])){
         $hashedPassword = password_hash($matkhau, PASSWORD_ARGON2ID);
         
         // Insert new employee record into database //(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, password)
-        $sql = "INSERT INTO nhanvien VALUES (?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO nhanvien(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, matkhau)
+        VALUES (?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?)";
         $params = array($id, $manv, $hoten, $ngaysinh, $sdt, $diachi, $chucvu, $email, $gioitinh, $maphongban, $hashedPassword);
         $stmt = sqlsrv_query($conn, $sql, $params);
         if($stmt === false) { // Handle query error

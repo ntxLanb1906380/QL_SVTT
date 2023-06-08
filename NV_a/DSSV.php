@@ -10,10 +10,10 @@
 </head>
 
 <body>
-    
+
 
     <?php include "connect.php" ?>
-    
+
     <?php
     //get data
     $sql = "SELECT * FROM sinhvien";
@@ -29,6 +29,11 @@
     <!-- Bảng danh sách nhân viên  -->
     <h2 align="center">Danh sách sinh viên </h2>
     <table border="2" align="center">
+        <tr>
+            <td colspan="16" align="center">
+                <button type="button" onclick="myFunction()">Thêm sinh viên mới</button>
+            </td>
+        </tr>
         <tr>
             <td>Mssv</td>
             <td>Họ tên</td>
@@ -96,28 +101,23 @@
                     <?php echo $row["id"]; ?>
                 </td>
                 <td>
-                    <a href="editSV.php?id=<?php echo $row['mssv']; ?> ">Edit</a>
+                    <a href="editSV.php?mssv=<?php echo $row['mssv']; ?> ">Edit</a>
                 </td>
                 <td>
-                    <a href="deleteSV.php?id=<?php echo $row['mssv']; ?> ">X</a>
+                    <a href="deleteSV.php?mssv=<?php echo $row['mssv']; ?> ">X</a>
                 </td>
             </tr>
             <?php
         }
         ?>
-        <tr>
-            <td colspan="16" align="center">
-                <button type="button" onclick="myFunction()">Thêm sinh viên mới</button>
-            </td>
-        </tr>
     </table>
-    
+
 </body>
 
 </html>
 <script>
     function myFunction() {
-        location.replace("createNV.php");
+        location.replace("createSV.php");
     }
 
 </script>

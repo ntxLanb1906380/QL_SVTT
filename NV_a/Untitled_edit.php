@@ -15,29 +15,33 @@
 
 	<?php
 	//get data
-	$id = $_GET['id'];
-	$sql = "SELECT * FROM nhanvien where id = ? ";
-	$params = array($id);
+	$mssv = $_GET['mssv'];
+	$sql = "SELECT * FROM sinhvien where mssv = ? ";
+	$params = array($mssv);
 	$result = sqlsrv_query($conn, $sql, $params);
 
 
 	//in danh sách dữ liệu
 	while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-		$id = $row["id"];
-		$mnv = $row["manv"];
+		$mssv = $row["mssv"];
 		$hten = $row["hoten"];
 		$ngsinh = $row["ngaysinh"];
-		$sdt = $row["sdt"];
 		$dchi = $row["diachi"];
-		$chvu = $row["chucvu"];
+		$sdt = $row["sdt"];
 		$email = $row["email"];
 		$gtinh = $row["gioitinh"];
-		$mpb = $row["maphongban"];
-		$pw = $row["matkhau"];
+		$matruong = $row["matruong"];
+		$makhoa = $row["makhoa"];
+		$bangdiem = $row["bangdiem"];
+		$dTB = $row["diemTB"];
+		$ndTT = $row["noidungTT"];
+		$kqtt = $row["ketqua"];
+		$makhoa = $row["makhoa"];
+		$idcb = $row["id"];
 	}
 	?>
 
-	<form method="post" action="xulySuaNV.php" class="form">
+	<form method="post" action="xulySuaSV.php" class="form">
 		<h2>Sửa thông tin nhân viên</h2>
 		Id:
 		<input type="text" name="id" value="<?php echo $id; ?>" required class="d"><br />

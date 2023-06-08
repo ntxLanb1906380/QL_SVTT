@@ -28,6 +28,11 @@
     <h2 align="center">Danh sách nhân viên </h2>
     <table border="2" align="center">
         <tr>
+            <td colspan="12" align="center">
+                <button type="button" onclick="myFunction()">Thêm nhân viên mới</button>
+            </td>
+        </tr>
+        <tr>
             <td>Id</td>
             <td>Mã số nhân viên</td>
             <td>Họ tên</td>
@@ -86,11 +91,6 @@
             <?php
         }
         ?>
-        <tr>
-            <td colspan="12" align="center">
-                <button type="button" onclick="myFunction()">Thêm nhân viên mới</button>
-            </td>
-        </tr>
     </table>
 </body>
 
