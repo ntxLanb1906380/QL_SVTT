@@ -36,7 +36,7 @@ if (isset($_POST['saveNV'])) {
         } elseif ($_POST['gtinh'] == "Nữ") {
             $gioitinh = "Nữ";
         } else {
-            $errors[] = "Không chọn đúng giới tính.";
+            $errors[] = "Lỗi.";
         }
     } else {
         $errors[] = "Chưa chọn giới tính.";
@@ -103,11 +103,11 @@ if (isset($_POST['saveNV'])) {
         //     'time_cost' => 2,
         //     'threads' => 2
         // ];
-        $hashedPassword = password_hash($matkhau, PASSWORD_ARGON2ID);
 
         // Insert new employee record into database //(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, matkhau)
 
     }
+    $hashedPassword = password_hash($matkhau, PASSWORD_ARGON2ID);
     $tsql = "UPDATE nhanvien SET manv = ?, hoten = ?, ngaysinh= ?, sdt= ?, diachi= ?, chucvu= ?, email= ?, gioitinh= ?, maphongban= ?, matkhau= ? WHERE id = ?";
     $param = array($manv, $hoten, $ngaysinh, $sdt, $diachi, $chucvu, $email, $gioitinh, $maphongban, $hashedPassword, $id);
     $result = sqlsrv_query($conn, $tsql, $param);
@@ -122,7 +122,9 @@ if (isset($_POST['saveNV'])) {
         echo "</div>";
     } else {
         header('Location: DSNV.php');
+        //var_dump($hashedPassword);
     }
+    sqlsrv_close($conn);
 }
-sqlsrv_close($conn);
+
 ?>
