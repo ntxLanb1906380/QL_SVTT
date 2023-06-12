@@ -86,7 +86,6 @@
 			<option value="12"> 12 (Tổ thanh tra, khiểu nại, tố cáo - Phòng giải pháp)</option>
 		</select> <br /><br />
 
-
 		Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
 		Nhập lại mật khẩu: <input type="password" name="pw" required value="" class="d"><br />
 		<br /><br />
