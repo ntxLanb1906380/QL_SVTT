@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -42,6 +41,14 @@
 
     $stmt = sqlsrv_query($conn, $sql);
 
+    // Tạo câu lệnh truy vấn đệ quy để lấy tên nhân viên theo phòng ban/ tổ
+    $sql_nv = "SELECT hoten, tenphongban
+    FROM phongban pb JOIN nhanvien nv
+    ON pb.maphongban = nv.maphongban
+    ORDER BY tenphongban";
+
+    $stmt_nv = sqlsrv_query($conn, $sql_nv);
+
     // Tạo danh sách cơ cấu tổ chức
     $org_structure = array();
     while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
@@ -58,28 +65,54 @@
         }
     }
 
+    //Tạo một mảng kết hợp để lưu trữ thông tin nhân viên theo tên phòng ban hoặc tổ
+    $employees_by_department = array();
+    while ($row_nv = sqlsrv_fetch_array($stmt_nv, SQLSRV_FETCH_ASSOC)) {
+        $department_name = $row_nv['tenphongban'];
+        $employee_name = $row_nv['hoten'];
+        if (!isset($employees_by_department[$department_name])) {
+            $employees_by_department[$department_name] = array();
+        }
+        array_push($employees_by_department[$department_name], $employee_name);
+    }
+
     // Đóng kết nối
     sqlsrv_close($conn);
 
-    function display_org_structure($org_structure)
+    // function display_org_structure($org_structure)
+    // {
+    //     echo '<ul>';
+    //     foreach ($org_structure as $department) {
+    //         echo '<li>' . $department['tenphongban'];
+    //         if (!empty($department['subordinates'])) {
+    //             display_org_structure($department['subordinates']);
+    //         }
+    //         echo '</li>';
+    //     }
+    //     echo '</ul>';
+    // }
+    
+    function display_org_structure($org_structure, $employees_by_department)
     {
         echo '<ul>';
         foreach ($org_structure as $department) {
             echo '<li>' . $department['tenphongban'];
+            if (isset($employees_by_department[$department['tenphongban']])) {
+                echo '<ul>';
+                foreach ($employees_by_department[$department['tenphongban']] as $employee_name) {
+                    echo '<li>' . $employee_name . '</li>';
+                }
+                echo '</ul>';
+            }
             if (!empty($department['subordinates'])) {
-                display_org_structure($department['subordinates']);
+                display_org_structure($department['subordinates'], $employees_by_department);
             }
             echo '</li>';
         }
         echo '</ul>';
     }
-
     // Gọi hàm để hiển thị thông tin cơ cấu tổ chức
-    display_org_structure($org_structure);
-
-
+    display_org_structure($org_structure, $employees_by_department);
     ?>
-
 </body>
-
 </html>
