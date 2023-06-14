@@ -11,8 +11,8 @@ $serverName = "LLANN";
     "PWD" => $pass
   )
   );
-// if(!$conn){
-//     die (print_r(sqlsrv_errors(),true));
-// } 
+if(!$conn){
+    die (print_r(sqlsrv_errors(),true));
+} 
 // else {   echo 'Kết nối thành công';}
 ?>

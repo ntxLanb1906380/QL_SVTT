@@ -10,11 +10,12 @@
   <!-- Kết nối với csdl để lấy id nhanvien -->
   <?php include "connect.php" ?>
   <?php
-  
+
   // Lấy id 
   $max_id_query = "SELECT MAX(id) AS max_id FROM nhanvien;";
   $result = sqlsrv_query($conn, $max_id_query);
   $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+
   $new_id = $row['max_id'] + 1;
   $new_mnv = strval($row['max_id'] + 1);
   // xét độ dài id để thêm 0
@@ -54,7 +55,21 @@
     <input type="radio" id="gtinh2" name="gtinh" value="Nữ">
     <label for="css">Nữ</label><br>
 
-    Mã phòng ban: <select id="mapb" name="mapb">
+    Mã phòng ban:<select id="mapb" name="mapb">
+      <?php
+      //Tạo câu truy vấn để lấy mã phòng ban
+      $sql = "SELECT maphongban, tenphongban FROM phongban";
+      $stmt = sqlsrv_query($conn, $sql);
+      if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+      while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        echo "<option value='" . $row['maphongban'] . "'>" . $row['maphongban'] ." - ". $row['tenphongban'] . "</option>";
+      }
+      sqlsrv_free_stmt($stmt);
+      ?>
+    </select> <br /><br /> 
+    <!-- <select id="mapb" name="mapb">
       <option value="0">-- Chọn mã phòng ban/ tổ</option>
       <option value="1"> 1 (Ban giám đốc)</option>
       <option value="2"> 2 (Phòng kinh doanh)</option>
@@ -68,15 +83,15 @@
       <option value="10"> 10 (Tổ nghiên cứu và phát triển (R&D) - Phòng giải pháp)</option>
       <option value="11"> 11 (Tổ hệ thống thông tin địa lý (Gis) - Phòng giải pháp)</option>
       <option value="12"> 12 (Tổ thanh tra, khiểu nại, tố cáo - Phòng giải pháp)</option>
-    </select> <br /><br />
+    </select> <br /><br /> -->
 
 
     Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
     Nhập lại mật khẩu: <input type="password" name="cf_pw" value="" required class="d"><br />
     <br /><br />
     <input type="submit" name="createNV" value="Tạo tài khoản" class="a" />
-		<br />
-		<input type="reset" name="reset" value="Reset" class="a" />
+    <br />
+    <input type="reset" name="reset" value="Reset" class="a" />
     <?php require 'xulyDKyNV.php'; ?>
   </form>
 

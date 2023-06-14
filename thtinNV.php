@@ -1,59 +1,98 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="css/style2.css">
-    <title>Thông tin nhân viên</title>
-
+    <meta charset="UTF-8">
+    <title>Hồ sơ cá nhân</title>
 </head>
+
 <body>
-<!-- Kết nối với csdl để lấy tt nhanvien -->
-        <?php
-        $serverName = "LLANN";
-        $database = "QL_SVTT";
-        $uid = "";
-        $pass = "";
-
-        $conn = sqlsrv_connect($serverName, array(
-            "Database" => $database,
-            "Uid" => $uid,
-            "PWD" => $pass
-        )
-        );
-        
-        session_start();
-        if (isset($_SESSION['id'])) {
-            $id = $_SESSION['id'];
-
-        $query = "SELECT * FROM nhanvien WHERE id = $id;";
-        $result = sqlsrv_query($conn, $query);
-
-        if ($result) {
-            //$numRows = sqlsrv_num_rows($result);
-            $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-            var_dump($row);
-
-            //Lấy số lượng bản ghi trả về
-            if (sqlsrv_has_rows($result) == 1) {
-                //Lấy thông tin user
-                $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-            //if (mysqli_num_rows($result) == 1) {
-            // Tìm thấy nhân viên trong CSDL
-            //$employee = mysqli_fetch_assoc($result);
-            echo "Thông tin của nhân viên " . $employee['name'] . ":";
-            echo "<br>";
-            echo "ID: " . $employee['id'];
-            echo "<br>";
-            echo "Email: " . $employee['email'];
-            echo "<br>";
-            echo "Số điện thoại: " . $employee['phone'];
-            // Nếu cần in ra thêm thông tin khác của nhân viên, bạn có thể thêm vào đây
+    <h2> Hồ sơ cá nhân </h2>
+    <?php
+    include "connect.php";
+    $mnv = $_GET["mnv"];
+    $sql = "SELECT * FROM nhanvien WHERE manv = ?";
+    $params = array($mnv);
+    $stmt = sqlsrv_query($conn, $sql, $params);
+    // if(!isset($_COOKIE["mnv"])){
+    if (!$stmt) {
+        echo "Lỗi truy vấn: " . print_r(sqlsrv_errors(), true);
+    } else {
+        if (!sqlsrv_has_rows($stmt)) {
+            echo "Không tìm thấy thông tin cá nhân.";
         } else {
-            // Không tìm thấy nhân viên trong CSDL
-            echo "Không tìm thấy thông tin của nhân viên!";
-        }}}
-        ?>
-
-    
+            $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+            // Format the date of birth
+            $ngaysinh = $row['ngaysinh']->format('d/m/Y');
+            ?>
+            <table>
+                <tr>
+                    <td>Id:</td>
+                    <td>
+                        <?php echo $row['id'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mã nhân viên:</td>
+                    <td>
+                        <?php echo $row['manv'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Họ và tên:</td>
+                    <td>
+                        <?php echo $row['hoten'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ngày sinh:</td>
+                    <td>
+                        <?php echo $ngaysinh ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại:</td>
+                    <td>
+                        <?php echo $row['sdt'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <?php echo $row['email'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ:</td>
+                    <td>
+                        <?php echo $row['diachi'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Giới tính:</td>
+                    <td>
+                        <?php echo $row['gioitinh'] === '1' ? 'Nam' : 'Nữ' ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mã phòng ban:</td>
+                    <td>
+                        <?php echo $row['maphongban'] ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Chức vụ:</td>
+                    <td>
+                        <?php echo $row['chucvu'] ?>
+                    </td>
+                </tr>
+            </table>
+            <?php
+        }
+        sqlsrv_free_stmt($stmt);
+    }
+    ?>
 </body>
 
 </html>

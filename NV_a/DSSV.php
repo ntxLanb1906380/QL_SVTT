@@ -86,7 +86,7 @@
                     <?php echo $row["makhoa"]; ?>
                 </td>
                 <td>
-                    <?php echo $row["bangdiem"]; ?>
+                    <a href='<?php echo $row["bangdiem"]; ?>' target="_blank">Xem bảng điểm</a>
                 </td>
                 <td>
                     <?php echo $row["diemTB"]; ?>

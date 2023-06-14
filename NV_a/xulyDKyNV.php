@@ -16,7 +16,6 @@ if(isset($_POST['createNV'])){
     $email = trim($_POST['email']);
     $gioitinh = trim($_POST['gtinh']);
     //Check gioi tinh
-
         if(isset($_POST['gtinh'])){
             if($_POST['gtinh'] == "Nam") {
                 $gioitinh = "Nam";
@@ -28,8 +27,6 @@ if(isset($_POST['createNV'])){
         } else {
             $errors[] = "Chưa chọn giới tính.";
         }
-        
-
     $maphongban = trim($_POST['mapb']);
     $matkhau = trim($_POST['pw']);
 
@@ -58,13 +55,7 @@ if(isset($_POST['createNV'])){
         sqlsrv_free_stmt($stmt);
     } else { // No error, continue
         sqlsrv_free_stmt($stmt);
-
         // Hash password using Argon2id algorithm
-        // $options = [
-        //     'memory_cost' => 1024,
-        //     'time_cost' => 2,
-        //     'threads' => 2
-        // ];
         $hashedPassword = password_hash($matkhau, PASSWORD_ARGON2ID);
         
         // Insert new employee record into database //(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, password)
@@ -78,12 +69,10 @@ if(isset($_POST['createNV'])){
         else {
             header('Location: DSNV.php');
         }
-
         if( isset($stmt) && !empty($stmt) ) {
             sqlsrv_free_stmt($stmt);
         }
     }
-
     // If there is any error, display them
     if(!empty($errors)) {
         foreach($errors as $error) {
@@ -92,6 +81,5 @@ if(isset($_POST['createNV'])){
         }
     }
 }
-
 sqlsrv_close($conn);
 ?>

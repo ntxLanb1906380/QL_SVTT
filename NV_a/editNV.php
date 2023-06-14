@@ -19,14 +19,21 @@
 	$sql = "SELECT * FROM nhanvien where id = ? ";
 	$params = array($id);
 	$result = sqlsrv_query($conn, $sql, $params);
+	if ($result === false) {
+		die(print_r(sqlsrv_errors(), true));
+	}
 
+	// $id = $_GET['id'];
+	// $sql = "SELECT * FROM nhanvien where id = ? ";
+	// $params = array($id);
+	// $result = sqlsrv_query($conn, $sql, $params);
+	
 
 	//in danh sách dữ liệu
 	while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
 		$id = $row["id"];
 		$mnv = $row["manv"];
 		$hten = $row["hoten"];
-		$ngsinh = $row["ngaysinh"];
 		$sdt = $row["sdt"];
 		$dchi = $row["diachi"];
 		$chvu = $row["chucvu"];
@@ -34,7 +41,13 @@
 		$gtinh = $row["gioitinh"];
 		$mpb = $row["maphongban"];
 		$pw = $row["matkhau"];
+		$currentMapb = $row['maphongban'];
+		$ngsinh = $row["ngaysinh"];
+		$ngsinh_dmy = $ngsinh->format('Y-m-d');
+
+		
 	}
+	
 	?>
 
 	<form method="post" action="xulySuaNV.php" class="form">
@@ -46,7 +59,7 @@
 		Họ tên:
 		<input type="text" name="hoten" value="<?php echo $hten; ?>" required class="d"><br />
 		Ngày sinh:
-		<input type="date" name="ngsinh" value="<?php echo $ngsinh ->format('d-m-Y'); ?>" required class="d"><br />
+		<input type="date" name="ngsinh" value="<?php echo $ngsinh_dmy; ?>" required class="d">
 		Số điện thoại:
 		<input type="tel" name="sdt" value="<?php echo $sdt; ?>" required class="d"><br />
 		Địa chỉ:
@@ -71,6 +84,22 @@
 		<label for="css">Nữ</label><br>
 
 		Mã phòng ban: <select id="mapb" name="mapb">
+			<?php
+			//Tạo câu truy vấn để lấy mã phòng ban
+			$tsql = "SELECT maphongban, tenphongban FROM phongban";
+			$stmt = sqlsrv_query($conn, $tsql);
+			if ($stmt === false) {
+				die(print_r(sqlsrv_errors(), true));
+			}
+			while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+				$selected = ($row['maphongban'] == $currentMapb) ? 'selected' : '';
+				echo "<option value='" . $row['maphongban'] . "' $selected>" . $row['maphongban'] . " - " . $row['tenphongban'] . "</option>";
+			}
+			sqlsrv_free_stmt($stmt);
+			?>
+		</select> <br /><br />
+
+		<!-- <select id="mapb" name="mapb">
 			<option value="<?php echo $mpb; ?>"><?php echo $mpb; ?></option>
 			<option value="1"> 1 (Ban giám đốc)</option>
 			<option value="2"> 2 (Phòng kinh doanh)</option>
@@ -84,9 +113,7 @@
 			<option value="10"> 10 (Tổ nghiên cứu và phát triển (R&D) - Phòng giải pháp)</option>
 			<option value="11"> 11 (Tổ hệ thống thông tin địa lý (Gis) - Phòng giải pháp)</option>
 			<option value="12"> 12 (Tổ thanh tra, khiểu nại, tố cáo - Phòng giải pháp)</option>
-		</select> <br /><br />
-
-
+		</select> <br /><br /> -->
 		Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
 		Nhập lại mật khẩu: <input type="password" name="pw" required value="" class="d"><br />
 		<br /><br />
@@ -95,8 +122,6 @@
 		<input type="reset" name="reset" value="Reset" class="a" />
 		<?php require 'xulySuaNV.php'; ?>
 	</form>
-
-
 </body>
 
 </html>
