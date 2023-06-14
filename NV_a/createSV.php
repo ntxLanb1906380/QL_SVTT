@@ -49,27 +49,57 @@
     <label for="html">Nam</label>
     <input type="radio" id="gtinh2" name="gtinh" value="Nữ">
     <label for="css">Nữ</label><br>
+
     Mã trường: <br />
 
     <select id="matruong" name="matruong">
-      <option value="0">-- Chọn mã trường của sinh viên</option>
-      <option value="CTU"> CTU - Trường Đại học Cần Thơ</option>
-      <option value="DVL"> DVL - Trường Đại học Văn Lang</option>
-      <option value="DVT"> DVT - Trường Đại học Trà Vinh</option>
-      <option value="TTG"> TTG - Trường Đại học Tiền Giang</option>
+      <?php
+      //Tạo câu truy vấn để lấy mã trường
+      $sql = "SELECT matruong, tentruong FROM truong";
+      $stmt = sqlsrv_query($conn, $sql);
+      if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+      while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        echo "<option value='" . $row['matruong'] . "'>" . $row['matruong'] ." - ". $row['tentruong'] . "</option>";
+      }
+      sqlsrv_free_stmt($stmt);
+      ?>
     </select> <br /><br />
 
     Mã khóa: <br />
     <select id="makhoa" name="makhoa">
-      <option value="0">-- Chọn mã khóa thực tập</option>
-      <option value="K1"> K1</option>
-      <option value="K2"> K2</option>
-      <option value="K3"> K3</option>
-      <option value="K4"> K4</option>
+      <?php
+      //Tạo câu truy vấn để lấy mã khóa thực tập
+      $sql = "SELECT * FROM khoaTT";
+      $stmt = sqlsrv_query($conn, $sql);
+      if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+      while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        echo "<option value='" . $row['makhoa'] . "'>" . $row['makhoa'] ." - ". $row['ngayBD']->format('d-m-Y')." - ". $row['ngayKT']->format('d-m-Y') . "</option>";
+      }
+      sqlsrv_free_stmt($stmt);
+      ?>
     </select> <br /><br />
     Bảng điểm: <input type="text" name="bangdiem" value="" class="d"><br />
     Điểm trung bình: <input type="text" name="diemTB" value="" class="d"><br />
-    Id cán bộ hướng dẫn: <input type="text" name="idcb" value="" required class="d"><br />
+    Id cán bộ hướng dẫn: <br />
+    <select id="idcb" name="idcb">
+      <?php
+      //Tạo câu truy vấn để lấy id cán bộ hướng dẫn
+      $sql = "SELECT * FROM nhanvien";
+      $stmt = sqlsrv_query($conn, $sql);
+      if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+      while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['manv'] . " - " . $row['hoten'] . "</option>";
+      }
+      sqlsrv_free_stmt($stmt);
+      ?>
+    </select> <br /><br />
+    
     Nội dung TT: <input type="text" name="ndtt" value="" class="d"><br />
     Kết quả TT: <input type="text" name="kqtt" value="" class="d">
 
