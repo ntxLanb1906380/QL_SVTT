@@ -11,9 +11,10 @@
     <h2> Hồ sơ cá nhân </h2>
     <?php
     include "connect.php";
-    $mnv = $_GET["mnv"];
-    $sql = "SELECT * FROM nhanvien WHERE manv = ?";
-    $params = array($mnv);
+    session_start();
+    $idnv = $_SESSION["idnv"];
+    $sql = "SELECT * FROM nhanvien WHERE id = ?";
+    $params = array($idnv);
     $stmt = sqlsrv_query($conn, $sql, $params);
     // if(!isset($_COOKIE["mnv"])){
     if (!$stmt) {
@@ -88,6 +89,9 @@
                     </td>
                 </tr>
             </table>
+
+            <button type="button" onclick="myFunction()"> Cập nhật thông tin </button>
+            <button type="button" onclick="print()"> In ra</button>
             <?php
         }
         sqlsrv_free_stmt($stmt);
@@ -96,3 +100,12 @@
 </body>
 
 </html>
+<script>
+    function myFunction() {
+        location.replace("UpdateNV.php");
+    }
+    function print() {
+        location.replace("printInfo.php");
+    }
+
+</script>

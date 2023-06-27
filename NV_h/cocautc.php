@@ -8,10 +8,7 @@
         Cơ cấu tổ chức
     </title>
 </head>
-
 <body>
-
-
     <!-- Kết nối cơ sở dữ liệu -->
     <?php include "connect.php" ?>
 
@@ -78,20 +75,6 @@
 
     // Đóng kết nối
     sqlsrv_close($conn);
-
-    // function display_org_structure($org_structure)
-    // {
-    //     echo '<ul>';
-    //     foreach ($org_structure as $department) {
-    //         echo '<li>' . $department['tenphongban'];
-    //         if (!empty($department['subordinates'])) {
-    //             display_org_structure($department['subordinates']);
-    //         }
-    //         echo '</li>';
-    //     }
-    //     echo '</ul>';
-    // }
-    
     function display_org_structure($org_structure, $employees_by_department)
     {
         echo '<ul>';

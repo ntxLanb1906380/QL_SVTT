@@ -26,7 +26,7 @@
                 <label><span class="caption">Nhớ tôi</span>
                     <input type="checkbox" checked="checked" />
                 </label>
-                <span><a href="#" >Quên mật khẩu?</a></span>
+                <span><a href="quenMK.php" >Quên mật khẩu?</a></span>
             <input type="submit" value="Log In">
         </form>
 </body>

@@ -9,37 +9,11 @@ include "connect.php";
 
 // Check if form is submitted
 if (isset($_POST['saveSV'])) {
-    // Get input values
-    $mssv = trim($_POST['mssv']);
-    $hoten = trim($_POST['hoten']);
-    $ngaysinh = trim($_POST['ngsinh']);
-    $diachi = trim($_POST['dchi']);
-    $sdt = trim($_POST['sdt']);
-    $email = trim($_POST['email']);
-    $gioitinh = trim($_POST['gtinh']);
 
-    //Check gioi tinh
-    if (isset($_POST['gtinh'])) {
-        if ($_POST['gtinh'] == "Nam") {
-            $gioitinh = "Nam";
-        } elseif ($_POST['gtinh'] == "Nữ") {
-            $gioitinh = "Nữ";
-        } else {
-            $errors[] = "Không chọn đúng giới tính.";
-        }
-    } else {
-        $errors[] = "Chưa chọn giới tính.";
-    }
+    
+    // Validate input values, add errors if any
+    // $errors = [];
 
-    $matruong = trim($_POST['matruong']);
-    $makhoa = trim($_POST['makhoa']);
-    $bangdiem = trim($_POST['bangdiem']);
-    $diemTB = trim($_POST['diemTB']);
-    $idcb = trim($_POST['idcb']);
-    $ndtt = trim($_POST['ndtt']);
-    $kqtt = trim($_POST['kqtt']);
-
-    //Khi thông tin bị trống
     $errors = [];
     if (empty($mssv)) {
         array_push($errors, "Mã số sinh viên là bắt buộc");
@@ -68,25 +42,55 @@ if (isset($_POST['saveSV'])) {
     if (empty($makhoa)) {
         array_push($errors, "Mã khóa thực tập là bắt buộc");
     }
-    if (empty($bangdiem)) {
-        $sql = "SELECT * FROM sinhvien where mssv = ? ";
-        $param = array($mssv);
-        $stmt = sqlsrv_query($conn, $sql, $param);
-        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-            $bangdiem = $row["bangdiem"];
-        }
-    }
+    // if (empty($bangdiem)) {
+    //     array_push($errors, "Bảng điểm là bắt buộc");
+    // }
     if (empty($diemTB)) {
         array_push($errors, "Điểm trung bình là bắt buộc");
     }
-    // if (empty($idcb)) {
-    //     $idcb = "";
-    // }
-    // if (empty($ndtt)) {
-    //     array_push($errors, "Nội dung thực tập là bắt buộc");
-    // }
+    if (empty($idcb)) {
+        array_push($errors, "Id cán bộ hướng dẫn là bắt buộc");
+    }
+    if (empty($ndtt)) {
+        array_push($errors, "Nội dung thực tập là bắt buộc");
+    }
+    
+    // Get input values
+    $mssv = trim($_POST['mssv']);
+    $hoten = trim($_POST['hoten']);
+    $ngaysinh = trim($_POST['ngsinh']);
+    $diachi = trim($_POST['dchi']);
+    $sdt = trim($_POST['sdt']);
+    $email = trim($_POST['email']);
+    $gioitinh = trim($_POST['gtinh']);
+    //Check gioi tinh
+
+    if (isset($_POST['gtinh'])) {
+        if ($_POST['gtinh'] == "Nam") {
+            $gioitinh = "Nam";
+        } elseif ($_POST['gtinh'] == "Nữ") {
+            $gioitinh = "Nữ";
+        } else {
+            $errors[] = "Không chọn đúng giới tính.";
+        }
+    } else {
+        $errors[] = "Chưa chọn giới tính.";
+    }
+
+
+    $matruong = trim($_POST['matruong']);
+    $makhoa = trim($_POST['makhoa']);
+    $bangdiem = trim($_POST['bangdiem']);
 
     // Lưu file pdf bảng điểm vào thư mục bangdiemSV
+    // if (!$bangdiem) {
+    //     $mssv = $_GET['mssv'];
+    //     $sql = "SELECT bangdiem FROM sinhvien where mssv = ? ";
+    //     $param = array($mssv);
+    //     $stmt = sqlsrv_query($conn, $sql, $param);
+    // } else {
+
+    //$bangdiem
     $upload_dir = '../bangdiemSV/';
     $bangdiem_name = $_FILES['bangdiem']['name'];
     $bangdiem_file = $upload_dir . $bangdiem_name;
@@ -97,24 +101,32 @@ if (isset($_POST['saveSV'])) {
         $errors[] = "Không thể tải lên bảng điểm.";
     }
 
+
+    $diemTB = trim($_POST['diemTB']);
+    $idcb = trim($_POST['idcb']);
+    $ndtt = trim($_POST['ndtt']);
+    $kqtt = trim($_POST['kqtt']);
+
+
+
     // Check if phone number or email already exist in database, add error if any
-    $csql = "SELECT * FROM sinhvien WHERE (sdt = ? OR email = ?)";
-    $paramm = array($sdt, $email);
-    $ststmt = sqlsrv_query($conn, $csql, $paramm);
-    if ($ststmt === false) { // Handle query error
+    $sql = "SELECT * FROM sinhvien WHERE (sdt = ? OR email = ?)";
+    $params = array($sdt, $email);
+    $stmt = sqlsrv_query($conn, $sql, $params);
+    if ($stmt === false) { // Handle query error
         array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
-    } elseif (sqlsrv_has_rows($ststmt)) { // Handle duplicate entry
+    } elseif (sqlsrv_has_rows($stmt)) { // Handle duplicate entry
         array_push($errors, "Số điện thoại hoặc email đã tồn tại trong hệ thống.");
-        sqlsrv_free_stmt($ststmt);
+        sqlsrv_free_stmt($stmt);
     } else {
         // No error, continue
-        sqlsrv_free_stmt($ststmt);
+        sqlsrv_free_stmt($stmt);
     }
 
     //cập nhật thông tin sinh viên
     $tsql = "UPDATE sinhvien SET hoten = ?, ngaysinh= ?, diachi= ?, sdt= ?, email= ?, gioitinh= ?, matruong= ?, makhoa= ?, bangdiem= ?, diemTB= ?, ketqua= ?, noidungTT= ?, id= ? WHERE mssv = ?";
-    $params = array($hoten, $ngaysinh, $diachi, $sdt, $email, $gioitinh, $matruong, $makhoa, $bangdiem, $diemTB, $kqtt, $ndtt, $idcb, $mssv);
-    $result = sqlsrv_query($conn, $tsql, $params);
+    $param = array($hoten, $ngaysinh, $diachi, $sdt, $email, $gioitinh, $matruong, $makhoa, $bangdiem, $diemTB, $kqtt, $ndtt, $idcb, $mssv);
+    $result = sqlsrv_query($conn, $tsql, $param);
     if ($result === false) {
         $errors = sqlsrv_errors();
         echo "<div class='alert alert-danger'>";
@@ -129,4 +141,4 @@ if (isset($_POST['saveSV'])) {
     }
 }
 sqlsrv_close($conn);
-?> 
+?>

@@ -69,23 +69,7 @@
       sqlsrv_free_stmt($stmt);
       ?>
     </select> <br /><br /> 
-    <!-- <select id="mapb" name="mapb">
-      <option value="0">-- Chọn mã phòng ban/ tổ</option>
-      <option value="1"> 1 (Ban giám đốc)</option>
-      <option value="2"> 2 (Phòng kinh doanh)</option>
-      <option value="3"> 3 (Phòng giải pháp)</option>
-      <option value="4"> 4 (Tổ tổng hợp - Phòng kinh doanh)</option>
-      <option value="5"> 5 (Tổ triển khai - chăm sóc khách hàng (CSKH) - Phòng kinh doanh)</option>
-      <option value="6"> 6 (Tổ văn thư TTCNTT - Phòng kinh doanh)</option>
-      <option value="7"> 7 (Tổ giải pháp CQS - Phòng giải pháp)</option>
-      <option value="8"> 8 (Tổ quản trị hệ thống CNTT - Phòng giải pháp)</option>
-      <option value="9"> 9 (Tổ camera - Phòng giải pháp)</option>
-      <option value="10"> 10 (Tổ nghiên cứu và phát triển (R&D) - Phòng giải pháp)</option>
-      <option value="11"> 11 (Tổ hệ thống thông tin địa lý (Gis) - Phòng giải pháp)</option>
-      <option value="12"> 12 (Tổ thanh tra, khiểu nại, tố cáo - Phòng giải pháp)</option>
-    </select> <br /><br /> -->
-
-
+    
     Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
     Nhập lại mật khẩu: <input type="password" name="cf_pw" value="" required class="d"><br />
     <br /><br />

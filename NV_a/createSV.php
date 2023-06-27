@@ -61,7 +61,7 @@
     Bảng điểm:
     <input type="file" name="bangdiem" accept="application/pdf"><br />
 
-    Điểm trung bình: <input type="text" name="diemTB" value="" class="d"><br />
+    Điểm trung bình: <input type="text" name="diemTB" value="" class="d" required ><br />
     Id cán bộ hướng dẫn: <br />
     <select id="idcb" name="idcb">
       <?php

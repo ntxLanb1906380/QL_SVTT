@@ -1,6 +1,6 @@
 .c {
     background-color: rgb(154, 202, 154);
-} 
+}
 
 .form {
     width: 500px;
@@ -9,13 +9,13 @@
     margin: 0 auto;
     font-weight: 700px;
     background-color: rgb(110, 148, 180);
-   }
+}
 
 .d {
     width: 100%;
     padding: 10px 0;
     border-radius: 5px;
-   }
+}
 
 .a {
     width: 100%;
@@ -23,15 +23,10 @@
     border-radius: 5px;
     background-color: blue;
     color: aliceblue;
-   }
-table, tr, th, td {
-    border: 2px solid rgb(19, 71, 23);
-    } 
+}
 
-tr {
-        background-color: rgb(236, 195, 180);
-        /* text-align-last : center; */
-    }
-h1, h2, h3 {
-    text-align: center;
+table,
+th,
+td {
+    border: 5px solid rgb(19, 71, 23);
 }

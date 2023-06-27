@@ -1,8 +1,9 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 /* Database connection start */
-include "connect.php" ;
-
+include "connect.php" ?>
+<?php
+// Check if form is submitted
 if (isset($_POST['createSV'])) {
     // Get input values
     $mssv = trim($_POST['msv']);
@@ -11,8 +12,9 @@ if (isset($_POST['createSV'])) {
     $diachi = trim($_POST['diachi']);
     $sdt = trim($_POST['sdt']);
     $email = trim($_POST['email']);
-
+    $gioitinh = trim($_POST['gtinh']);
     //Check gioi tinh
+
     if (isset($_POST['gtinh'])) {
         if ($_POST['gtinh'] == "Nam") {
             $gioitinh = "Nam";
@@ -27,18 +29,7 @@ if (isset($_POST['createSV'])) {
 
     $matruong = trim($_POST['matruong']);
     $makhoa = trim($_POST['makhoa']);
-
-    // Lưu file pdf bảng điểm vào thư mục bangdiemSV
-    $upload_dir = '../bangdiemSV/';
-    $bangdiem_name = $_FILES['bangdiem']['name'];
-    $bangdiem_file = $upload_dir . $bangdiem_name;
-
-    if (move_uploaded_file($_FILES['bangdiem']['tmp_name'], $bangdiem_file)) {
-        $bangdiem = $bangdiem_file;
-    } else {
-        $errors[] = "Không thể tải lên bảng điểm.";
-    }
-
+    $bangdiem = trim($_POST['bangdiem']);
     $diemTB = trim($_POST['diemTB']);
     $idcb = trim($_POST['idcb']);
     $ndtt = trim($_POST['ndtt']);
@@ -65,7 +56,7 @@ if (isset($_POST['createSV'])) {
         array_push($errors, "Email là bắt buộc");
     }
     if (empty($gioitinh)) {
-        array_push($errors, "Chưa chọn giới tính");
+        $errors = "Chưa chọn giới tính";
     }
     if (empty($matruong)) {
         array_push($errors, "Mã trường là bắt buộc");
@@ -76,18 +67,20 @@ if (isset($_POST['createSV'])) {
     // if (empty($bangdiem)) {
     //     array_push($errors, "Bảng điểm là bắt buộc");
     // }
-    // // if (
-    if (empty($diemTB)) {
-        array_push($errors, "Điểm trung bình là bắt buộc");
-    }
-    // if (empty($idcb)) {
-    //     $idcb = "";
+    // if (empty($diemTB)) {
+    //     array_push($errors, "Điểm trung bình là bắt buộc");
     // }
-    
+    if (empty($idcb)) {
+        array_push($errors, "Id cán bộ hướng dẫn là bắt buộc là bắt buộc");
+    }
+    // if (empty($ndtt)) {
+    //     array_push($errors, "Nội dung thực tập là bắt buộc");
+    // }
+
     // Check if phone number or email already exist in database, add error if any
     $sql = "SELECT * FROM sinhvien WHERE mssv = ? OR sdt = ? OR email = ?";
-    $param = array($mssv, $sdt, $email);
-    $stmt = sqlsrv_query($conn, $sql, $param);
+    $params = array($mssv, $sdt, $email);
+    $stmt = sqlsrv_query($conn, $sql, $params);
     if ($stmt === false) { // Handle query error
         array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
     } elseif (sqlsrv_has_rows($stmt)) { // Handle duplicate entry
@@ -97,20 +90,21 @@ if (isset($_POST['createSV'])) {
         sqlsrv_free_stmt($stmt);
 
         // Insert new employee record into database //(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, password)
-        $tsql = "INSERT INTO sinhvien(mssv, hoten, ngaysinh, diachi, sdt, email, gioitinh, matruong, makhoa, bangdiem, diemTB, ketqua, noidungTT, id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO sinhvien(mssv, hoten, ngaysinh, diachi, sdt, email, gioitinh, matruong, makhoa, bangdiem, diemTB, ketqua, noidungTT, id)
+        VALUES (?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $params = array($mssv, $hoten, $ngaysinh, $diachi, $sdt, $email, $gioitinh, $matruong, $makhoa, $bangdiem, $diemTB, $kqtt, $ndtt, $idcb);
-        $ststmt = sqlsrv_query($conn, $tsql, $params);
-        if ($ststmt === false) { // Handle query error
+        $stmt = sqlsrv_query($conn, $sql, $params);
+        if ($stmt === false) { // Handle query error
             array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
         } else {
             header('Location: DSSV.php');
         }
 
-        if (isset($ststmt) && !empty($ststmt)) {
-            sqlsrv_free_stmt($ststmt);
+        if (isset($stmt) && !empty($stmt)) {
+            sqlsrv_free_stmt($stmt);
         }
     }
+
     // If there is any error, display them
     if (!empty($errors)) {
         foreach ($errors as $error) {
@@ -119,5 +113,6 @@ if (isset($_POST['createSV'])) {
         }
     }
 }
+
 sqlsrv_close($conn);
 ?>
