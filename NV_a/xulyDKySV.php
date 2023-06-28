@@ -40,50 +40,10 @@ if (isset($_POST['createSV'])) {
     }
 
     $diemTB = trim($_POST['diemTB']);
-    $idcb = trim($_POST['idcb']);
-    $ndtt = trim($_POST['ndtt']);
-    $kqtt = trim($_POST['kqtt']);
+    // $idcb = trim($_POST['idcb']);
+    // $ndtt = trim($_POST['ndtt']);
+    // $kqtt = trim($_POST['kqtt']);
 
-    // Validate input values, add errors if any
-    $errors = [];
-    if (empty($mssv)) {
-        array_push($errors, "Mã số sinh viên là bắt buộc");
-    }
-    if (empty($hoten)) {
-        array_push($errors, "Họ tên là bắt buộc");
-    }
-    if (empty($ngaysinh)) {
-        array_push($errors, "Ngày sinh là bắt buộc");
-    }
-    if (empty($diachi)) {
-        array_push($errors, "Địa chỉ là bắt buộc");
-    }
-    if (empty($sdt)) {
-        array_push($errors, "Số điện thoại là bắt buộc");
-    }
-    if (empty($email)) {
-        array_push($errors, "Email là bắt buộc");
-    }
-    if (empty($gioitinh)) {
-        array_push($errors, "Chưa chọn giới tính");
-    }
-    if (empty($matruong)) {
-        array_push($errors, "Mã trường là bắt buộc");
-    }
-    if (empty($makhoa)) {
-        array_push($errors, "Mã khóa thực tập là bắt buộc");
-    }
-    // if (empty($bangdiem)) {
-    //     array_push($errors, "Bảng điểm là bắt buộc");
-    // }
-    // // if (
-    if (empty($diemTB)) {
-        array_push($errors, "Điểm trung bình là bắt buộc");
-    }
-    // if (empty($idcb)) {
-    //     $idcb = "";
-    // }
-    
     // Check if phone number or email already exist in database, add error if any
     $sql = "SELECT * FROM sinhvien WHERE mssv = ? OR sdt = ? OR email = ?";
     $param = array($mssv, $sdt, $email);
@@ -97,14 +57,20 @@ if (isset($_POST['createSV'])) {
         sqlsrv_free_stmt($stmt);
 
         // Insert new employee record into database //(id, manv, hoten, ngaysinh, sdt, diachi, chucvu, email, gioitinh, maphongban, password)
-        $tsql = "INSERT INTO sinhvien(mssv, hoten, ngaysinh, diachi, sdt, email, gioitinh, matruong, makhoa, bangdiem, diemTB, ketqua, noidungTT, id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $params = array($mssv, $hoten, $ngaysinh, $diachi, $sdt, $email, $gioitinh, $matruong, $makhoa, $bangdiem, $diemTB, $kqtt, $ndtt, $idcb);
+        $tsql = "INSERT INTO sinhvien(mssv, hoten, ngaysinh, diachi, sdt, email, gioitinh, matruong, makhoa, bangdiem, diemTB)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $params = array($mssv, $hoten, $ngaysinh, $diachi, $sdt, $email, $gioitinh, $matruong, $makhoa, $bangdiem, $diemTB);
         $ststmt = sqlsrv_query($conn, $tsql, $params);
         if ($ststmt === false) { // Handle query error
             array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
         } else {
-            header('Location: DSSV.php');
+            ?>
+            <script>
+                alert('Thêm sinh viên thành công!');
+                window.location.href = 'DSSV.php';
+            </script>
+            <?php
+            // header('Location: DSSV.php');
         }
 
         if (isset($ststmt) && !empty($ststmt)) {
@@ -114,8 +80,14 @@ if (isset($_POST['createSV'])) {
     // If there is any error, display them
     if (!empty($errors)) {
         foreach ($errors as $error) {
-            echo "<div class='error'>$error</div>";
-            echo "Có lỗi xảy ra trong quá trình đăng ký. <a href='createSV.php'>Thử lại</a>";
+            ?>
+            <script>
+                alert('Có lỗi xảy ra trong quá trình đăng ký!');
+                window.location.href = 'createSV.php';
+            </script>
+            <?php
+            // echo "<div class='error'>$error</div>";
+            // echo "Có lỗi xảy ra trong quá trình đăng ký. <a href='createSV.php'>Thử lại</a>";
         }
     }
 }
