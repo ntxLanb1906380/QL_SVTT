@@ -32,7 +32,7 @@
         <tr>
             <td>Mã trường</td>
             <td>Tên trường</td>
-            <td>Sửa</td>
+            <td>Sửa tên trường</td>
             <td>Xóa</td>
         </tr>
 
@@ -48,10 +48,10 @@
                     <?php echo $row["tentruong"]; ?>
                 </td>
                 <td>
-                    Edit
+                <a href="editTruong.php?matr=<?php echo $row['matruong']; ?> ">Sửa</a>
                 </td>
                 <td>
-                    X
+                <a href="deleteTr.php?matr=<?php echo $row['matruong']; ?> ">X</a>
                 </td>
             </tr>
             <?php
@@ -69,7 +69,7 @@
 </html>
 <script>
     function myFunction() {
-        location.replace("createNV.php");
+        location.replace("themTruong.php");
     }
 
 </script>
