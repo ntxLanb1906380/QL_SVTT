@@ -11,20 +11,23 @@
 </head>
 
 <body>
-    <!-- connect database -->
-    <?php include "connect.php" ?>
-
+    <!-- -->
     <?php
-    //get data
-    $mssv = $_GET['mssv'];
+    session_start();
+    include "connect.php";
+    $msv = $_GET['mssv'];
+
+    //lưu biến idnv vào session
+    $_SESSION["mssv"] = $msv;
+    
     $sql = "SELECT * FROM sinhvien where mssv = ? ";
-    $params = array($mssv);
+    $params = array($msv);
     $result = sqlsrv_query($conn, $sql, $params);
 
 
     //in danh sách dữ liệu
     while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-        $mssv = $row["mssv"];
+        // $mssv = $row["mssv"];
         $hten = $row["hoten"];
         $ngsinh = $row["ngaysinh"];
         $ngsinh_dmy = $ngsinh->format('Y-m-d');
@@ -47,8 +50,8 @@
 
     <form method="post" action="xulySuaSV.php" class="form" enctype="multipart/form-data">
         <h2>Sửa thông tin sinh viên</h2>
-        Mã số sinh viên:
-        <input type="text" name="mssv" value="<?php echo $mssv; ?>" required class="d"><br />
+        Mã số sinh viên: <?php echo $msv; ?>
+        <br />
         Họ tên:
         <input type="text" name="hoten" value="<?php echo $hten; ?>" required class="d"><br />
         Ngày sinh:
@@ -134,7 +137,6 @@
         <input type="submit" name="saveSV" value="Lưu thông tin đã sửa" class="a" />
         <br />
         <input type="reset" name="reset" value="Reset" class="a" />
-        <?php require 'xulySuaSV.php'; ?>
     </form>
 </body>
 </html>
