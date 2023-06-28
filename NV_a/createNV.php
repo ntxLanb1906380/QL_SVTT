@@ -76,7 +76,6 @@
     <input type="submit" name="createNV" value="Tạo tài khoản" class="a" />
     <br />
     <input type="reset" name="reset" value="Reset" class="a" />
-    <?php require 'xulyDKyNV.php'; ?>
   </form>
 
 </body>
