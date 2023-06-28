@@ -62,26 +62,8 @@
     <input type="file" name="bangdiem" accept="application/pdf"><br />
 
     Điểm trung bình: <input type="text" name="diemTB" value="" class="d" required ><br />
-    Id cán bộ hướng dẫn: <br />
-    <select id="idcb" name="idcb">
-      <?php
-      //Tạo câu truy vấn để lấy id cán bộ hướng dẫn
-      $sql = "SELECT * FROM nhanvien";
-      $stmt = sqlsrv_query($conn, $sql);
-      if ($stmt === false) {
-        die(print_r(sqlsrv_errors(), true));
-      }
-      while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['manv'] . " - " . $row['hoten'] . "</option>";
-      }
-      sqlsrv_free_stmt($stmt);
-      ?>
-    </select> <br /><br />
+    <br />
 
-    Nội dung TT: <input type="text" name="ndtt" value="" class="d"><br />
-    Kết quả TT: <input type="text" name="kqtt" value="" class="d">
-
-    <br /><br />
     <input type="submit" name="createSV" value="Tạo tài khoản" class="a" />
     <br />
     <input type="reset" name="reset" value="Reset" class="a" />
