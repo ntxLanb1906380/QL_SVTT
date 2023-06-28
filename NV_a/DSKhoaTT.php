@@ -52,10 +52,10 @@
                     <?php echo $row["ngayKT"]->format('d-m-Y'); ?>
                 </td>
                 <td>
-                    Edit
+                <a href="editKhoa.php?maK=<?php echo $row['makhoa']; ?> ">Sửa</a>
                 </td>
                 <td>
-                    X
+                <a href="deleteKh.php?maK=<?php echo $row['makhoa']; ?> ">X</a>
                 </td>
             </tr>
             <?php
@@ -73,7 +73,7 @@
 </html>
 <script>
     function myFunction() {
-        location.replace("createNV.php");
+        location.replace("themkhoa.php");
     }
 
 </script>
