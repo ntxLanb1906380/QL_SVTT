@@ -11,27 +11,24 @@
 
 <body>
 	<!-- connect database -->
-	<?php include "connect.php" ?>
+	<?php include "connect.php" ;
 
-	<?php
-	//get data
-	$id = $_GET['id'];
+	//Bắt đầu session
+    session_start();
+	$idnv = $_GET['id'];
+
+    //lưu biến idnv vào session
+    $_SESSION["id"] = $idnv;
+
 	$sql = "SELECT * FROM nhanvien where id = ? ";
-	$params = array($id);
+	$params = array($idnv);
 	$result = sqlsrv_query($conn, $sql, $params);
 	if ($result === false) {
 		die(print_r(sqlsrv_errors(), true));
 	}
-
-	// $id = $_GET['id'];
-	// $sql = "SELECT * FROM nhanvien where id = ? ";
-	// $params = array($id);
-	// $result = sqlsrv_query($conn, $sql, $params);
 	
-
 	//in danh sách dữ liệu
 	while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-		$id = $row["id"];
 		$mnv = $row["manv"];
 		$hten = $row["hoten"];
 		$sdt = $row["sdt"];
@@ -52,10 +49,10 @@
 
 	<form method="post" action="xulySuaNV.php" class="form">
 		<h2>Sửa thông tin nhân viên</h2>
-		Id:
-		<input type="text" name="id" value="<?php echo $id; ?>" required class="d"><br />
-		Mã nhân viên:
-		<input type="text" name="mnv" value="<?php echo $mnv; ?>" required class="d"><br />
+		Id:<?php echo $idnv; ?><br />
+
+		Mã nhân viên:<?php echo $mnv; ?><br />
+
 		Họ tên:
 		<input type="text" name="hoten" value="<?php echo $hten; ?>" required class="d"><br />
 		Ngày sinh:
@@ -100,12 +97,10 @@
 		</select> <br /><br />
 
 		Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
-		Nhập lại mật khẩu: <input type="password" name="pw" required value="" class="d"><br />
 		<br /><br />
 		<input type="submit" name="saveNV" value="Lưu thông tin đã sửa" class="a" />
 		<br />
 		<input type="reset" name="reset" value="Reset" class="a" />
-		<?php require 'xulySuaNV.php'; ?>
 	</form>
 </body>
 
