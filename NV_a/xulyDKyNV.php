@@ -67,7 +67,13 @@ if(isset($_POST['createNV'])){
             array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
         } 
         else {
-            header('Location: DSNV.php');
+            ?>
+            <script>
+                alert('Thêm thành công!');
+                window.location.href = 'DSNV.php';
+            </script>
+            <?php
+            // header('Location: DSNV.php');
         }
         if( isset($stmt) && !empty($stmt) ) {
             sqlsrv_free_stmt($stmt);
@@ -76,8 +82,14 @@ if(isset($_POST['createNV'])){
     // If there is any error, display them
     if(!empty($errors)) {
         foreach($errors as $error) {
-            echo "<div class='error'>$error</div>";
-            echo "Có lỗi xảy ra trong quá trình đăng ký. <a href='createNV.php'>Thử lại</a>";
+            ?>
+            <script>
+                alert('Có lỗi xảy ra trong quá trình đăng ký!');
+                window.location.href = 'createNV.php';
+            </script>
+            <?php
+            // echo "<div class='error'>$error</div>";
+            // echo "Có lỗi xảy ra trong quá trình đăng ký. <a href='createNV.php'>Thử lại</a>";
         }
     }
 }
