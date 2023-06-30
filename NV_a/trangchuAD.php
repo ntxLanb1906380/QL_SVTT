@@ -9,16 +9,16 @@
     </head>
     <h2>Trang chủ </h2>
     <?php
-    session_start();
     include "connect.php";
-    $idnv = $_GET["id"];
-
-    //lưu biến idnv vào session
-    $_SESSION["idnv"] = $idnv;
     ?>
     <ul>
         <li>
             <a href="../NV_h/cocautc.php">Xem cơ cấu tổ chức</a>
+        </li>
+        </br>
+
+        <li>
+            <a href="DSphongban.php">Danh sách phòng ban</a>
         </li>
         </br>
 
@@ -48,7 +48,7 @@
         </br>
 
         <li>
-            <a href="../NV_h/chonDSSVkhoa.php?id=<?php echo $idnv; ?>">Xem danh sách sinh viên hướng dẫn</a>
+            <a href="DSphancong.php">Xem danh sách sinh viên thực tập</a>
         </li>
         </br>
 
@@ -58,12 +58,17 @@
         </br>
 
         <li>
-            <a href="../NV_h/thtinNV.php?id=<?php echo $idnv; ?>">Xem thông tin cá nhân</a>
+            <a href="../NV_h/thtinNV.php">Xem thông tin cá nhân</a>
         </li>
         </br>
 
         <li>
-            <a href="../NV_h/doiMK.php?id=<?php echo $idnv; ?>">Đổi mật khẩu</a>
+            <a href="../NV_h/doiMK.php">Đổi mật khẩu</a>
+        </li>
+        </br>
+
+        <li>
+            <a href="../NV_h/logout.php">Đăng xuất</a>
         </li>
 </body>
 
