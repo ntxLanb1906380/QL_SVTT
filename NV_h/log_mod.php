@@ -42,12 +42,17 @@ if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
                     // Kiểm tra password
                     if (password_verify($password, $row['matkhau'])) {
                         // Login success //Untitled_thtin
-                        $cookie_name = "mnv";
-                        $cookie_value = $row['manv'];
-                        setcookie($cookie_name, $cookie_value, time() + (86400 / 24), "/");
-                        setcookie("hoten", $row['hoten'], time() + (86400 / 24), "/");
-                        setcookie("id", $row['id'], time() + (86400 / 24), "/");
-                        header("Location: trangchu.php?id=$id");
+                        // $cookie_name = "mnv";
+                        // $cookie_value = $row['manv'];
+                        // setcookie($cookie_name, $cookie_value, time() + (86400 / 24), "/");
+                        // setcookie("hoten", $row['hoten'], time() + (86400 / 24), "/");
+                        // setcookie("id", $row['id'], time() + (86400 / 24), "/");
+
+                        // Khi người dùng đăng nhập thành công
+                        session_start();
+                        $_SESSION['idnv'] = $id;
+
+                        header("Location: trangchu.php");
                     } else {
                         // Wrong password
                         echo "Sai nhân viên hoặc mật khẩu";
