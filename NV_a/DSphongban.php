@@ -52,10 +52,10 @@
                     <?php echo $row["phongbancha"]; ?>
                 </td>
                 <td>
-                    Edit
+                <a href="editPBan.php?maPB=<?php echo $row['maphongban']; ?> ">Sửa</a>
                 </td>
                 <td>
-                    X
+                <a href="deletePB.php?maPB=<?php echo $row['maphongban']; ?> ">X</a>
                 </td>
             </tr>
             <?php
@@ -73,7 +73,7 @@
 </html>
 <script>
     function myFunction() {
-        location.replace("createNV.php");
+        location.replace("themPBan.php");
     }
 
 </script>
