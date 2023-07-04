@@ -50,4 +50,4 @@
         var selectedValue = document.getElementById("makhoa").value; 
         location.replace("DShuongdanSV.php?makhoa=" + selectedValue); 
         } 
-</script>
+</script> 
