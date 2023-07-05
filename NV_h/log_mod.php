@@ -5,23 +5,9 @@ include "connect.php"
 <?php
 $password = $_POST["pw"];
 
-// Hash password using Argon2id algorithm
-// $options = [
-//     'memory_cost' => 1024,
-//     'time_cost' => 2,
-//     'threads' => 2
-// ];
-
-// $hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
-
 // Kiểm tra xem form đã submit chưa
 
 if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
-    // Kết nối đến CSDL
-    // $conn = sqlsrv_connect($serverName, $connection);
-    // if (!$conn) {
-    //     die(print_r(sqlsrv_errors(), true));
-    // } else {
     // Sử dụng Prepared Statement để bảo vệ khỏi SQL Injection
     $sql = "SELECT * FROM nhanvien WHERE manv = ?";
     $params = array($_POST["mnv"]);
@@ -41,7 +27,6 @@ if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
                     $id = $row["id"];
                     // Kiểm tra password
                     if (password_verify($password, $row['matkhau'])) {
-                        // Login success //Untitled_thtin
                         // $cookie_name = "mnv";
                         // $cookie_value = $row['manv'];
                         // setcookie($cookie_name, $cookie_value, time() + (86400 / 24), "/");
@@ -52,7 +37,12 @@ if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
                         session_start();
                         $_SESSION['idnv'] = $id;
 
-                        header("Location: trangchu.php");
+                        if ($row["chucvu"] !== "Nhân viên admin") {
+                            header("Location: trangchu.php");
+                        } else {
+
+                            header("Location: ../NV_a/trangchuAD.php");
+                        }
                     } else {
                         // Wrong password
                         echo "Sai nhân viên hoặc mật khẩu";
@@ -63,7 +53,6 @@ if (isset($_POST["mnv"]) && isset($_POST["pw"])) {
                 echo "Không tìm thấy tài khoản nhân viên";
             }
         } else {
-            // Error executing query
             echo "Lỗi thực thi truy vấn: " . print_r(sqlsrv_errors(), true);
         }
         // Giải phóng resources
