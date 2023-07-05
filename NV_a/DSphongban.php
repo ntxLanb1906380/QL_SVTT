@@ -30,7 +30,7 @@
     <h2 align="center">Danh sách phòng ban/ tổ </h2>
     <table border="2" align="center">
         <tr>
-            <td>Mã phong ban</td>
+            <td>Mã phòng ban</td>
             <td>Tên phòng ban</td>
             <td>Phòng ban cha</td>
             <td>Sửa</td>
