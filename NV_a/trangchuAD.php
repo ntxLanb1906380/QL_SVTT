@@ -13,6 +13,11 @@
     ?>
     <ul>
         <li>
+            <a href="../NV_h/timkiem.php">Tìm kiếm thông tin sinh viên</a>
+        </li>
+        </br>
+
+        <li>
             <a href="../NV_h/cocautc.php">Xem cơ cấu tổ chức</a>
         </li>
         </br>
