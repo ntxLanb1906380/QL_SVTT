@@ -10,7 +10,6 @@ $msv = $_SESSION["mssv"];
 // Check if form is submitted
 if (isset($_POST['saveSV'])) {
     // Get input values
-    // $mssv = trim($_POST['mssv']);
     $hoten = trim($_POST['hoten']);
     $ngaysinh = trim($_POST['ngsinh']);
     $diachi = trim($_POST['dchi']);
@@ -33,37 +32,38 @@ if (isset($_POST['saveSV'])) {
 
     $matruong = trim($_POST['matruong']);
     $makhoa = trim($_POST['makhoa']);
-    $bangdiem = trim($_POST['bangdiem']);
+    $bangdiem = $_POST['bangdiem'];
+    $bdiem = $_POST['bdiem'];
     $diemTB = trim($_POST['diemTB']);
     $idcb = trim($_POST['idcb']);
     $ndtt = trim($_POST['ndtt']);
     $kqtt = trim($_POST['kqtt']);
 
-    //Khi thông tin bị trống
-    if (empty($bangdiem)) {
-        $sql = "SELECT * FROM sinhvien where mssv = ? ";
-        $param = array($mssv);
-        $stmt = sqlsrv_query($conn, $sql, $param);
-        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-            $bangdiem = $row["bangdiem"];
-        }
-    }
-
+    //Khi thông tin bị trống lấy đường dẫn đã lưu trước đó trong csdl
+    if (empty($bangdiem) && !(empty($bdiem))) {
+        $bangdiem = $bdiem;
+    } else {
     // Lưu file pdf bảng điểm vào thư mục bangdiemSV
     $upload_dir = '../bangdiemSV/';
-    $bangdiem_name = $_FILES['bangdiem']['name'];
-    $bangdiem_file = $upload_dir . $bangdiem_name;
+    $bangdiem = [];
+    if (isset($_FILES['bangdiem'])) {
+        $bangdiem_name = $_FILES['bangdiem']['name'];
+        $bangdiem_file = $upload_dir . $bangdiem_name;
 
-    if (move_uploaded_file($_FILES['bangdiem']['tmp_name'], $bangdiem_file)) {
-        $bangdiem = $bangdiem_file;
-    } else {
-        $errors[] = "Không thể tải lên bảng điểm.";
+        if (move_uploaded_file($_FILES['bangdiem']['tmp_name'], $bangdiem_file)) {
+            $bangdiem = $bangdiem_file;
+        } else {
+            $errors[] = "Không thể tải lên bảng điểm.";
+        }
     }
+}
+
 
     // Check if phone number or email already exist in database, add error if any
     $csql = "SELECT * FROM sinhvien WHERE (sdt = ? OR email = ?)";
     $paramm = array($sdt, $email);
     $ststmt = sqlsrv_query($conn, $csql, $paramm);
+    $errors = [];
     if ($ststmt === false) { // Handle query error
         array_push($errors, "Database error: " . sqlsrv_errors()[0]['message']);
     } elseif (sqlsrv_has_rows($ststmt)) { // Handle duplicate entry
@@ -97,4 +97,4 @@ if (isset($_POST['saveSV'])) {
     }
 }
 sqlsrv_close($conn);
-?> 
+?>
