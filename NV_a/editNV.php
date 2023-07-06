@@ -15,13 +15,13 @@
 
 	//Bắt đầu session
     session_start();
-	$idnv = $_GET['id'];
+	$idcb = $_GET['idnvhd'];
 
     //lưu biến idnv vào session
-    $_SESSION["id"] = $idnv;
+    $_SESSION["idnvhd"] = $idcb;
 
 	$sql = "SELECT * FROM nhanvien where id = ? ";
-	$params = array($idnv);
+	$params = array($idcb);
 	$result = sqlsrv_query($conn, $sql, $params);
 	if ($result === false) {
 		die(print_r(sqlsrv_errors(), true));
@@ -49,7 +49,7 @@
 
 	<form method="post" action="xulySuaNV.php" class="form">
 		<h2>Sửa thông tin nhân viên</h2>
-		Id:<?php echo $idnv; ?><br />
+		Id:<?php echo $idcb; ?><br />
 
 		Mã nhân viên:<?php echo $mnv; ?><br />
 
@@ -74,11 +74,30 @@
 		Email: <input type="email" name="email" value="<?php echo $email; ?>" required class="d"><br />
 
 		Giới tính: <br />
-
-		<input type="radio" id="gtinh1" name="gtinh" value="Nam" checked>
-		<label for="html">Nam</label>
-		<input type="radio" id="gtinh2" name="gtinh" value="Nữ">
-		<label for="css">Nữ</label><br>
+		<?php
+		if ($gtinh === 'Nam') {
+			?>
+			<input type="radio" id="gtinh1" name="gtinh" value="Nam" checked>;
+			<label for="html">Nam</label>
+			<input type="radio" id="gtinh2" name="gtinh" value="Nữ">
+			<label for="css">Nữ</label>
+		<?php
+		} else if ($gtinh === 'Nữ') {
+			?>
+				<input type="radio" id="gtinh1" name="gtinh" value="Nam">
+				<label for="html">Nam</label>
+				<input type="radio" id="gtinh2" name="gtinh" value="Nữ" checked>
+				<label for="css">Nữ</label>
+				<?php
+		} else {
+			?>
+				<input type="radio" id="gtinh1" name="gtinh" value="Nam">
+				<label for="html">Nam</label>
+				<input type="radio" id="gtinh2" name="gtinh" value="Nữ">
+				<label for="css">Nữ</label>
+				<?php
+		}
+		?><br>
 
 		Mã phòng ban: <select id="mapb" name="mapb">
 			<?php
@@ -96,7 +115,8 @@
 			?>
 		</select> <br /><br />
 
-		Mật khẩu: <input type="password" name="pw" value="" required class="d"><br />
+		Mật khẩu: <input type="password" name="pwd" value="" class="d"><br />
+		<input type="hidden" name="pw" value="<?php echo $pw; ?>" class="d">
 		<br /><br />
 		<input type="submit" name="saveNV" value="Lưu thông tin đã sửa" class="a" />
 		<br />
