@@ -3,7 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="css/style2.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
     <meta charset="UTF-8">
     <title>
         Sửa thông tin sinh viên
@@ -19,7 +20,7 @@
 
     //lưu biến idnv vào session
     $_SESSION["mssv"] = $msv;
-    
+
     $sql = "SELECT * FROM sinhvien where mssv = ? ";
     $params = array($msv);
     $result = sqlsrv_query($conn, $sql, $params);
@@ -37,7 +38,7 @@
         $gtinh = $row["gioitinh"];
         $matruong = $row["matruong"];
         $makhoa = $row["makhoa"];
-        $bangdiem = $row["bangdiem"];
+        $bdiem = $row["bangdiem"];
         $dTB = $row["diemTB"];
         $idcb = $row["id"];
         $ndTT = $row["noidungTT"];
@@ -50,7 +51,8 @@
 
     <form method="post" action="xulySuaSV.php" class="form" enctype="multipart/form-data">
         <h2>Sửa thông tin sinh viên</h2>
-        Mã số sinh viên: <?php echo $msv; ?>
+        Mã số sinh viên:
+        <?php echo $msv; ?>
         <br />
         Họ tên:
         <input type="text" name="hoten" value="<?php echo $hten; ?>" required class="d"><br />
@@ -62,13 +64,32 @@
         <input type="tel" name="sdt" value="<?php echo $sdt; ?>" required class="d"><br />
         Email:
         <input type="email" name="email" value="<?php echo $email; ?>" required class="d"><br />
+        
         Giới tính: <br />
-
-        <input type="radio" id="gtinh1" name="gtinh" value="Nam" checked>
-        <label for="html">Nam</label>
-        <input type="radio" id="gtinh2" name="gtinh" value="Nữ">
-        <label for="css">Nữ</label><br>
-
+		<?php
+		if ($gtinh === 'Nam') {
+			?>
+			<input type="radio" id="gtinh1" name="gtinh" value="Nam" checked>;
+			<label for="html">Nam</label>
+			<input type="radio" id="gtinh2" name="gtinh" value="Nữ">
+			<label for="css">Nữ</label>
+		<?php
+		} else if ($gtinh === 'Nữ') {
+			?>
+				<input type="radio" id="gtinh1" name="gtinh" value="Nam">
+				<label for="html">Nam</label>
+				<input type="radio" id="gtinh2" name="gtinh" value="Nữ" checked>
+				<label for="css">Nữ</label>
+				<?php
+		} else {
+			?>
+				<input type="radio" id="gtinh1" name="gtinh" value="Nam">
+				<label for="html">Nam</label>
+				<input type="radio" id="gtinh2" name="gtinh" value="Nữ">
+				<label for="css">Nữ</label>
+				<?php
+		}
+		?><br>
         Mã trường: <br />
         <select id="matruong" name="matruong">
             <?php
@@ -106,7 +127,17 @@
         </select> <br /><br />
 
         Bảng điểm:
-        <input type="file" name="bangdiem" accept="application/pdf" class="d"><br />
+        <?php
+        if (!empty($bdiem)) {
+            echo "<br>";
+            echo "Tệp đã lưu: ";
+            echo basename($bdiem); // Lấy tên tệp từ đường dẫn đầy đủ
+            echo "<a href='$bdiem' download> (Mở)</a>";
+            echo "<input type='hidden' name='bdiem' value='" . $bdiem . "'>";
+        }
+        ?>
+        </br>
+        Chọn file bảng điểm khác: <input type="file" name="bangdiem" accept="application/pdf" class="d"><br />
 
         Điểm trung bình:
         <input type="text" name="diemTB" value="<?php echo $dTB; ?>" class="d"><br />
@@ -139,4 +170,5 @@
         <input type="reset" name="reset" value="Reset" class="a" />
     </form>
 </body>
+
 </html>
