@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="css/style2.css">
     <meta charset="UTF-8">
@@ -81,10 +82,10 @@
                     <?php echo $row["maphongban"]; ?>
                 </td>
                 <td>
-                    <a href="editNV.php?id=<?php echo $row['id']; ?> ">Edit</a>
+                    <a href="editNV.php?idnvhd=<?php echo $row['id']; ?> ">Edit</a>
                 </td>
                 <td>
-                    <a href="deleteNV.php?id=<?php echo $row['id']; ?> ">X</a>
+                    <a href="deleteNV.php?idnvhd=<?php echo $row['id']; ?> ">X</a>
                 </td>
             </tr>
             <?php
