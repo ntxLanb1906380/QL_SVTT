@@ -3,10 +3,10 @@
 include "connect.php" ?>
 
 <?php
-$id = $_GET['id'];
+$idcbhd = $_GET['idnvhd'];
 // Xóa nhân viên
 $sql = "DELETE FROM nhanvien WHERE id = ?";
-$params = array($id);
+$params = array($idcbhd);
 $stmt = sqlsrv_prepare($conn, $sql, $params);
 
 if (sqlsrv_execute($stmt)) {
